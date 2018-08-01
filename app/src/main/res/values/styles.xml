@@ -1,0 +1,41 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="BottomNavigation">
+        <item name="android:background">@color/teal</item>
+        <item name="itemBackground">@drawable/navigation_bar_item_bg</item>
+        <item name="itemIconTint">@color/navigation_bar_txt_color</item>
+        <item name="itemTextColor">@color/navigation_bar_txt_color</item>
+        <item name="paddingStart">@dimen/bottom_navigation_padding</item>
+        <item name="paddingEnd">@dimen/bottom_navigation_padding</item>
+    </style>
+
+    <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="contentPaddingBottom">10dp</item>
+        <item name="contentPaddingTop">10dp</item>
+        <item name="contentPaddingLeft">10dp</item>
+        <item name="contentPaddingRight">10dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="LabelTitleStyle" >
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+    </style>
+
+
+</resources>

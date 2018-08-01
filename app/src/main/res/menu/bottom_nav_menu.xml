@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionList"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home_nav_label"/>
+
+    <item
+        android:id="@+id/actionBookmarked"
+        android:icon="@drawable/ic_bookmark_white"
+        android:title="Bookmarked"/>
+    <item
+        android:id="@+id/actionAdd"
+        android:title="Add new"/>
+    <item
+        android:id="@+id/actionCategory"
+        android:icon="@drawable/ic_list"
+        android:title="Feeds"/>
+    <item
+        android:id="@+id/actionSettings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        />
+</menu>
