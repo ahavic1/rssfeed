@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import feedrss.dev.aporia.com.rssfeed.AppError
+import feedrss.dev.aporia.com.rssfeed.BaseViewModel
 import feedrss.dev.aporia.com.rssfeed.viewmodel.ViewModelFactory
 
-abstract class BaseFragment<ViewModelType : ViewModel> : Fragment() {
+abstract class BaseFragment<ViewModelType : BaseViewModel> : Fragment() {
 
     protected lateinit var viewModel: ViewModelType
 
@@ -32,6 +33,7 @@ abstract class BaseFragment<ViewModelType : ViewModel> : Fragment() {
             this,
             ViewModelFactory.getInstance(activity?.application!!)
         ).get(viewModelClass)
+        lifecycle.addObserver(viewModel)
         bindViewModel()
     }
 
