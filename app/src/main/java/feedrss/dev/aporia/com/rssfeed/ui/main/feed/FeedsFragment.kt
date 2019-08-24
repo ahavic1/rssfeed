@@ -28,7 +28,7 @@ class FeedsFragment: BaseFragment<FeedsViewModel>() {
             }
         })
 
-        viewModel.errorObservable.observe(this@FeedsFragment, Observer {
+        viewModel.errorObservable.observe(viewLifecycleOwner, Observer {
             it?.let { onError(it) }
         })
     }

@@ -13,4 +13,9 @@ class AddFeedFragment: BaseFragment<AddFeedViewModel>() {
 
     override fun bindViewModel() {
     }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = FeedsFragment()
+    }
 }

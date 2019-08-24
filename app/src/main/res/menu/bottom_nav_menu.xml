@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/actionList"
+        android:id="@+id/actionHome"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_nav_home"/>
 
@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_bookmark_white"
         android:title="@string/bottom_nav_bookmarked"/>
     <item
-        android:id="@+id/actionAdd"
+        android:id="@+id/actionAddFeed"
         android:icon="@drawable/ic_add"
         android:title="@string/bottom_nav_add_feed"/>
     <item

@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import feedrss.dev.aporia.com.rssfeed.ui.base.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.common.replaceFragment
+import feedrss.dev.aporia.com.rssfeed.ui.main.feed.AddFeedFragment
 import feedrss.dev.aporia.com.rssfeed.ui.main.feed.FeedsFragment
 import feedrss.dev.aporia.com.rssfeed.ui.main.post.BookmarksFragment
 import feedrss.dev.aporia.com.rssfeed.ui.main.post.PostsFragment
@@ -38,20 +39,19 @@ class HomeFragment : Fragment() {
 
     private fun setOnNavBarClickListener() {
         bottomNavBar.setOnNavigationItemSelectedListener {
-            val selectedFragment: Fragment = when {
-                it.itemId == R.id.actionList -> PostsFragment.newInstance()
-                it.itemId == R.id.actionBookmarked -> BookmarksFragment.newInstance()
-                it.itemId == R.id.actionCategory -> FeedsFragment.newInstance()
+            val selectedFragment = when (it.itemId) {
+                R.id.actionHome -> PostsFragment.newInstance()
+                R.id.actionBookmarked -> BookmarksFragment.newInstance()
+                R.id.actionAddFeed -> AddFeedFragment.newInstance()
+                R.id.actionCategory -> FeedsFragment.newInstance()
+                R.id.actionSettings -> PostsFragment.newInstance()
                 else -> PostsFragment.newInstance()
             }
+
             activity?.supportFragmentManager?.replaceFragment(R.id.frame_layout, selectedFragment)
             true
         }
-
-        bottomNavBar.menu.findItem(R.id.actionList).isChecked = true
-        activity?.supportFragmentManager?.replaceFragment(R.id.frame_layout,
-            PostsFragment.newInstance()
-        )
+        bottomNavBar.selectedItemId = R.id.actionHome
     }
 
     override fun onAttach(context: Context) {
