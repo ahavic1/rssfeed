@@ -3,6 +3,11 @@
 buildscript {
 
     ext {
+        // Android API
+        androidCompileSdkVersion = 28
+        androidMinSdkVersion = 21
+        androidTargetSdkVersion = 28
+
         gradleVersion = '3.4.0'
         kotlinVersion = '1.3.50'
         safeArgsVersion = '1.0.0-alpha02'

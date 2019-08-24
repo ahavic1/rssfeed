@@ -8,27 +8,17 @@ import io.reactivex.rxkotlin.toSingle
 
 class PostRepository(private var postDao: PostDao) {
 
-    fun getPosts(): Single<List<Post>> //= postDao.load()
-    {
-        val postsArray = ArrayList<Post>()
+    fun getPosts(): Single<List<Post>> {
+        val posts = mutableListOf<Post>()
         for (i in 1..10) {
             val index = i.toString()
-            postsArray.add(Post(index, "title $index", "description description " +
+            posts.add(Post(index, "title $index", "description description " +
                     "description description description description v description v v v v v v " +
                     "vdescription description description description description description description " +
                     "description description description description description description  $index", "url $index",
                     bookmarked = i%2 == 0))
         }
-        return postsArray.toSingle()
-    }
-
-    fun getBookmarkedPosts(): Single<List<Post>> {
-        return getPosts().flattenAsObservable {
-            it
-        }.filter {
-            it.bookmarked
-        }.toList()
-
+        return posts.toSingle()
     }
 
     fun bookmarkPost(id: String): Observable<Unit> = Observable.fromCallable { postDao.bookmark(id) }

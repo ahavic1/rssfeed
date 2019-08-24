@@ -27,7 +27,7 @@ class BookmarksFragment: BaseFragment<ListViewModel>() {
         get() = ListViewModel::class.java
 
     override fun bindViewModel() {
-        viewModel.bookmarkedPostsObservable.observe(viewLifecycleOwner, Observer {
+        viewModel.bookmarkedPosts.observe(viewLifecycleOwner, Observer {
             it?.let {
                 swipeRefreshLayout.isRefreshing = false
                 postsAdapter.update(it)

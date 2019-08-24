@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
-import feedrss.dev.aporia.com.rssfeed.extensions.replaceFragment
+import feedrss.dev.aporia.com.rssfeed.replaceFragment
 
 
 class HomeFragment : Fragment() {

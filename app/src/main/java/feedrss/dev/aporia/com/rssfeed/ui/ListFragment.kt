@@ -2,10 +2,6 @@ package feedrss.dev.aporia.com.rssfeed.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +9,10 @@ import com.jakewharton.rxbinding2.widget.RxSearchView
 import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
-import feedrss.dev.aporia.com.rssfeed.extensions.obtainViewModel
 import feedrss.dev.aporia.com.rssfeed.viewmodel.ListViewModel
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list.recyclerView
+import kotlinx.android.synthetic.main.fragment_list.searchView
+import kotlinx.android.synthetic.main.fragment_list.swipeRefreshLayout
 
 class ListFragment : BaseFragment<ListViewModel>() {
 
@@ -27,8 +24,9 @@ class ListFragment : BaseFragment<ListViewModel>() {
     override val layoutId: Int = R.layout.fragment_list
     override val viewModelClass: Class<ListViewModel> = ListViewModel::class.java
 
+    @SuppressLint("CheckResult")
     override fun bindViewModel() {
-        viewModel.postsObservable.observe(this@ListFragment, Observer {
+        viewModel.posts.observe(this@ListFragment, Observer {
             it?.let {
                 swipeRefreshLayout.isRefreshing = false
                 postsAdapter.update(it)
@@ -43,9 +41,24 @@ class ListFragment : BaseFragment<ListViewModel>() {
             it?.let { onError(it) }
         })
 
-        initRecyclerView()
-        setOnRefreshListener()
-        setOnSearchListener()
+        recyclerView.run {
+            layoutManager = LinearLayoutManager(activity)
+            itemAnimator = DefaultItemAnimator()
+            adapter = postsAdapter
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = true
+            viewModel.refreshPosts()
+        }
+
+        RxSearchView.queryTextChangeEvents(searchView)
+            .skipWhile {
+                it.queryText().length < 3
+            }
+            .subscribe {
+                viewModel.searchPosts(it.queryText())
+            }
     }
 
     override fun onAttach(context: Context) {
@@ -62,34 +75,6 @@ class ListFragment : BaseFragment<ListViewModel>() {
         listener = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refresh()
-    }
-
-    private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = postsAdapter
-    }
-
-    private fun setOnRefreshListener() {
-        swipeRefreshLayout.setOnRefreshListener {
-            swipeRefreshLayout.isRefreshing = true
-            viewModel.refresh()
-        }
-    }
-
-    @SuppressLint("CheckResult")
-    private fun setOnSearchListener() {
-        RxSearchView.queryTextChangeEvents(searchView)
-            .skipWhile {
-                it.queryText().length < 3
-            }
-            .subscribe {
-                postsAdapter.filter.filter(it.queryText())
-            }
-    }
 
     private fun openDetails(post: Post) {
 

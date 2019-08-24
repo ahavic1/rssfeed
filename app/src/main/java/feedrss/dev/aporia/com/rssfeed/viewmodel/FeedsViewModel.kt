@@ -1,13 +1,9 @@
 package feedrss.dev.aporia.com.rssfeed.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import feedrss.dev.aporia.com.rssfeed.AppError
-import feedrss.dev.aporia.com.rssfeed.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.Schedulers
+import feedrss.dev.aporia.com.rssfeed.*
 import feedrss.dev.aporia.com.rssfeed.data.model.Feed
 import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
-import feedrss.dev.aporia.com.rssfeed.extensions.disposeWith
-import feedrss.dev.aporia.com.rssfeed.extensions.uiSubscribe
 
 class FeedsViewModel(
     private var feedRepository: FeedRepository,
@@ -19,12 +15,12 @@ class FeedsViewModel(
 
 
     init {
-        getFeeds()
+        fetchFeeds()
     }
 
-    private fun getFeeds() {
+    private fun fetchFeeds() {
         feedRepository.getFeeds().uiSubscribe({
             feedsObservable.value = it
-        }, errorObservable, schedulers).disposeWith(disposables)
+        }, errorObservable)
     }
 }
