@@ -8,7 +8,7 @@ import feedrss.dev.aporia.com.rssfeed.data.model.Feed
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 
 @Database(entities = [Post::class, Feed::class], version = 1)
-abstract class AppDB: RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun feedDao(): FeedDao
 }

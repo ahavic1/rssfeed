@@ -19,9 +19,11 @@ class PostAdapter(private val viewModel: ListViewModel,
     private var postsFiltered: ArrayList<Post> = posts
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.post_list_item_layout,
-                                                                        parent,
-                                                            false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.post_list_item_layout,
+            parent,
+            false
+        )
         return ViewHolder(view, viewModel)
     }
 

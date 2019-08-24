@@ -2,7 +2,7 @@ package feedrss.dev.aporia.com.rssfeed.extensions
 
 import androidx.lifecycle.MutableLiveData
 import feedrss.dev.aporia.com.rssfeed.AppError
-import feedrss.dev.aporia.com.rssfeed.SchedulersWrapper
+import feedrss.dev.aporia.com.rssfeed.Schedulers
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,7 @@ import retrofit2.HttpException
 
 fun  <T> Single<T>.uiSubscribe(onSuccess: (T) -> Unit,
                                exceptionObservable: MutableLiveData<AppError>,
-                               schedulers: SchedulersWrapper): Disposable {
+                               schedulers: Schedulers): Disposable {
     return subscribeOn(schedulers.io())
             .observeOn(schedulers.main())
             .subscribe({
@@ -24,7 +24,7 @@ fun  <T> Single<T>.uiSubscribe(onSuccess: (T) -> Unit,
 
 fun  <T> Observable<T>.uiSubscribe(onSuccess: (T) -> Unit,
                                    exceptionObservable: MutableLiveData<AppError>,
-                                   schedulers: SchedulersWrapper): Disposable {
+                                   schedulers: Schedulers): Disposable {
     return subscribeOn(schedulers.io())
             .observeOn(schedulers.main())
             .subscribe({

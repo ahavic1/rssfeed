@@ -20,19 +20,19 @@ object Dependencies {
                     .addConverterFactory(RssConverterFactory.create())
                     .build().create(WebService::class.java)
 
-    var appDB: AppDB? = null
+    var appDatabase: AppDatabase? = null
 
     fun getRetrofit(): WebService {
         return webService
     }
 
-    fun getDatabase(context: Context): AppDB {
-        if (appDB == null) {
-            appDB = Room.databaseBuilder(context, AppDB::class.java, "app-db")
+    fun getDatabase(context: Context): AppDatabase {
+        if (appDatabase == null) {
+            appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, "app-db")
                     .fallbackToDestructiveMigration()
                     .build()
         }
-        return appDB!!
+        return appDatabase!!
     }
 
     private fun provideHttpClient(): OkHttpClient {

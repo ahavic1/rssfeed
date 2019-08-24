@@ -3,14 +3,14 @@ package feedrss.dev.aporia.com.rssfeed.viewmodel
 import androidx.lifecycle.MutableLiveData
 import feedrss.dev.aporia.com.rssfeed.AppError
 import feedrss.dev.aporia.com.rssfeed.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.SchedulersWrapper
+import feedrss.dev.aporia.com.rssfeed.Schedulers
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
 import feedrss.dev.aporia.com.rssfeed.extensions.disposeWith
 import feedrss.dev.aporia.com.rssfeed.extensions.uiSubscribe
 
 class ListViewModel(private var postRepository: PostRepository,
-                    schedulers: SchedulersWrapper): BaseViewModel(schedulers) {
+                    schedulers: Schedulers): BaseViewModel(schedulers) {
 
     val postsObservable = MutableLiveData<List<Post>>()
     val bookmarkedPostsObservable = MutableLiveData<List<Post>>()
@@ -30,13 +30,13 @@ class ListViewModel(private var postRepository: PostRepository,
     private fun fetchPosts() {
         postRepository.getPosts().uiSubscribe({
             postsObservable.value = it
-        }, errorObservable, schedulers).disposeWith(disposeBag)
+        }, errorObservable, schedulers).disposeWith(disposables)
     }
 
     private fun fetchBookmarkedPosts() {
         postRepository.getBookmarkedPosts().uiSubscribe({
             bookmarkedPostsObservable.value = it
-        }, errorObservable, schedulers).disposeWith(disposeBag)
+        }, errorObservable, schedulers).disposeWith(disposables)
     }
 
     fun onItemClick(post: Post) {
@@ -46,12 +46,12 @@ class ListViewModel(private var postRepository: PostRepository,
     fun onBookmarkItem(post: Post) {
         postRepository.bookmarkPost(post.id).uiSubscribe({
             refresh()
-        }, errorObservable, schedulers).disposeWith(disposeBag)
+        }, errorObservable, schedulers).disposeWith(disposables)
     }
 
     fun unBookmarkPost(post: Post) {
         postRepository.unBookmarkPost(post.id).uiSubscribe({
             refresh()
-        }, errorObservable, schedulers).disposeWith(disposeBag)
+        }, errorObservable, schedulers).disposeWith(disposables)
     }
 }

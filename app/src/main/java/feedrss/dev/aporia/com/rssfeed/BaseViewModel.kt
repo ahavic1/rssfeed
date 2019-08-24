@@ -3,12 +3,12 @@ package feedrss.dev.aporia.com.rssfeed
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-open class BaseViewModel(protected  var schedulers: SchedulersWrapper): ViewModel() {
+abstract class BaseViewModel(protected  var schedulers: Schedulers): ViewModel() {
 
-    protected val disposeBag = CompositeDisposable()
+    protected val disposables = CompositeDisposable()
 
     override fun onCleared() {
         super.onCleared()
-        disposeBag.clear()
+        disposables.dispose()
     }
 }

@@ -5,16 +5,16 @@ import android.app.Application
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import feedrss.dev.aporia.com.rssfeed.SchedulersWrapper
+import feedrss.dev.aporia.com.rssfeed.Schedulers
 import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
 import feedrss.dev.aporia.com.rssfeed.di.Injection
 
 class ViewModelFactory private constructor(
-        private val application: Application,
-        private val schedulers: SchedulersWrapper,
-        private val postsRepository: PostRepository,
-        private val feedRepository: FeedRepository
+    private val application: Application,
+    private val schedulers: Schedulers,
+    private val postsRepository: PostRepository,
+    private val feedRepository: FeedRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
@@ -38,7 +38,7 @@ class ViewModelFactory private constructor(
 
         fun getInstance(application: Application) =
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
-                    INSTANCE ?: ViewModelFactory(application, SchedulersWrapper(),
+                    INSTANCE ?: ViewModelFactory(application, Schedulers(),
                             Injection.providePostRepository(application.applicationContext),
                             Injection.provideFeedRepository(application.applicationContext))
                             .also { INSTANCE = it }

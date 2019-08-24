@@ -2,10 +2,6 @@ package feedrss.dev.aporia.com.rssfeed.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,43 +9,38 @@ import com.jakewharton.rxbinding2.widget.RxSearchView
 import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
-import feedrss.dev.aporia.com.rssfeed.extensions.obtainViewModel
 import feedrss.dev.aporia.com.rssfeed.viewmodel.ListViewModel
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list.recyclerView
+import kotlinx.android.synthetic.main.fragment_list.searchView
+import kotlinx.android.synthetic.main.fragment_list.swipeRefreshLayout
 
-class BookmarksFragment: BaseFragment() {
+class BookmarksFragment: BaseFragment<ListViewModel>() {
 
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var viewModel: ListViewModel
     private val postsAdapter by lazy {
         PostAdapter(viewModel, ArrayList(0))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list, container, false)
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_list
+    override val viewModelClass: Class<ListViewModel>
+        get() = ListViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun bindViewModel() {
+        viewModel.bookmarkedPostsObservable.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                swipeRefreshLayout.isRefreshing = false
+                postsAdapter.update(it)
+            }
+        })
 
-        viewModel = obtainViewModel(ListViewModel::class.java).apply {
+        viewModel.errorObservable.observe(viewLifecycleOwner, Observer {
+            it?.let { onError(it) }
+        })
 
-            bookmarkedPostsObservable.observe(this@BookmarksFragment, Observer {
-                it?.let {
-                    swipeRefreshLayout.isRefreshing = false
-                    postsAdapter.update(it)
-                }
-            })
-
-            errorObservable.observe(this@BookmarksFragment, Observer {
-                it?.let { onError(it) }
-            })
-
-            postObservable.observe(this@BookmarksFragment, Observer {
-                it?.let { openDetails(it) }
-            })
-        }
+        viewModel.postObservable.observe(viewLifecycleOwner, Observer {
+            it?.let { openDetails(it) }
+        })
 
         initRecyclerView()
         disableOnRefreshListener()
