@@ -13,16 +13,14 @@ class FeedsViewModel(
 ) : BaseViewModel(schedulers) {
 
     var feedsObservable = MutableLiveData<List<Feed>>()
-    var errorObservable = MutableLiveData<AppError>()
-
 
     init {
         fetchFeeds()
     }
 
     private fun fetchFeeds() {
-        feedRepository.getFeeds().uiSubscribe({
+        feedRepository.getFeeds().uiSubscribe {
             feedsObservable.value = it
-        }, errorObservable)
+        }
     }
 }

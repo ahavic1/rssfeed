@@ -5,8 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import feedrss.dev.aporia.com.rssfeed.ui.base.AppError
-import feedrss.dev.aporia.com.rssfeed.ui.base.ViewModelFactory
+import feedrss.dev.aporia.com.rssfeed.ui.base.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import retrofit2.HttpException
@@ -30,10 +29,10 @@ fun Disposable.disposeWith(disposable: CompositeDisposable) {
     disposable.add(this)
 }
 
-fun handleError(t: Throwable): AppError {
+fun mapApiError(t: Throwable): BaseError {
     return if (t is HttpException) {
-        AppError(t.code(), t.message!!)
+        HttpError
     } else {
-        AppError(500, "Something went wrong")
+        DefaultError
     }
 }

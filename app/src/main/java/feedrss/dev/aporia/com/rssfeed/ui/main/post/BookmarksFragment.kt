@@ -33,10 +33,6 @@ class BookmarksFragment: BaseFragment<PostsViewModel>() {
                 postsAdapter.update(it)
             }
         })
-
-        viewModel.errorObservable.observe(viewLifecycleOwner, Observer {
-            it?.let { onError(it) }
-        })
     }
 
     @SuppressLint("CheckResult")

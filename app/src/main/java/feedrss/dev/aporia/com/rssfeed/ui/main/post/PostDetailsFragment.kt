@@ -53,23 +53,23 @@ class PostDetailsViewModel(
 
     fun onBookmarkClick() {
         if (post.value!!.bookmarked) {
-            postRepository.unBookmarkPost(postId).uiSubscribe({
+            postRepository.unBookmarkPost(postId).uiSubscribe {
                 _post.value = post.value?.copy(
                     bookmarked = false
                 )
-            }, errorObservable)
+            }
         } else {
-            postRepository.bookmarkPost(postId).uiSubscribe({
+            postRepository.bookmarkPost(postId).uiSubscribe {
                 _post.value = post.value?.copy(
                     bookmarked = true
                 )
-            }, errorObservable)
+            }
         }
     }
 
     private fun fetchPost() {
-        postRepository.getPost(postId).uiSubscribe({
+        postRepository.getPost(postId).uiSubscribe {
             _post.value = it
-        }, errorObservable)
+        }
     }
 }

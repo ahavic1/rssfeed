@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -11,18 +13,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 
-abstract class BaseFragment<ViewModelType : BaseViewModel> : Fragment() {
+abstract class BaseFragment<ViewModelType : BaseViewModel> : BaseView<ViewModelType>, Fragment() {
 
-    protected lateinit var viewModel: ViewModelType
     protected lateinit var viewDataBinding: ViewDataBinding
 
+    final override lateinit var viewModel: ViewModelType
+
+    @get:LayoutRes
     abstract val layoutId: Int
-    abstract val viewModelClass: Class<ViewModelType>
-    abstract val viewModeRId: Int
 
-    abstract fun bindViewModel()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return viewDataBinding.root
     }
@@ -46,6 +50,7 @@ abstract class BaseFragment<ViewModelType : BaseViewModel> : Fragment() {
 
         setViewModelArguments()
         setNavigationObserver()
+        setDefaultErrorObserver()
         bindViewModel()
     }
 
@@ -64,7 +69,44 @@ abstract class BaseFragment<ViewModelType : BaseViewModel> : Fragment() {
         })
     }
 
-    fun onError(error: AppError) {
-        //do something with it
+    protected open fun setDefaultErrorObserver() {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is DefaultError -> Toast.makeText(
+                    context, getString(it.title) + "\n\n" + getString(it.description),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
+}
+
+
+/**
+ * Represent View that can be bound to ViewModel
+ */
+interface BaseView<ViewModelType : BaseViewModel> {
+    /**
+     * Provides class of this views ViewModel
+     * This is required to properly inject the ViewModel
+     */
+    val viewModelClass: Class<ViewModelType>
+
+    /**
+     * Provides name of view model (BR.name)
+     */
+    val viewModeRId: Int
+
+    /**
+     * Provides ViewModel of this view
+     * ViewModel will be injected into the view and returned from this method
+     */
+    var viewModel: ViewModelType
+
+    /**
+     * Invoked once everything is ready
+     * Use this method to complete binding to view model
+     * (all bindings that were not possible through XML)
+     */
+    fun bindViewModel()
 }

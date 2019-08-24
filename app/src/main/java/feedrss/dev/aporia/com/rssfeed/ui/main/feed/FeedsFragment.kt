@@ -27,10 +27,6 @@ class FeedsFragment: BaseFragment<FeedsViewModel>() {
                 feedsContainer.addView(textView)
             }
         })
-
-        viewModel.errorObservable.observe(viewLifecycleOwner, Observer {
-            it?.let { onError(it) }
-        })
     }
 
     companion object {
