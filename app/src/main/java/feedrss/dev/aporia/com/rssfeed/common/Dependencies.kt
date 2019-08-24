@@ -1,7 +1,8 @@
-package feedrss.dev.aporia.com.rssfeed
+package feedrss.dev.aporia.com.rssfeed.common
 
 import android.content.Context
 import androidx.room.Room
+import feedrss.dev.aporia.com.rssfeed.data.db.AppDatabase
 import feedrss.dev.aporia.com.rssfeed.data.network.WebService
 import me.toptas.rssconverter.RssConverterFactory
 import okhttp3.OkHttpClient

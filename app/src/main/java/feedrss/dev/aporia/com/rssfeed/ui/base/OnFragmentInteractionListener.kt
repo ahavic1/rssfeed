@@ -1,4 +1,4 @@
-package feedrss.dev.aporia.com.rssfeed
+package feedrss.dev.aporia.com.rssfeed.ui.base
 
 import androidx.navigation.NavDirections
 

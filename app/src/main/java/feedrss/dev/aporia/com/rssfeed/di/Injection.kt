@@ -1,7 +1,7 @@
 package feedrss.dev.aporia.com.rssfeed.di
 
 import android.content.Context
-import feedrss.dev.aporia.com.rssfeed.Dependencies
+import feedrss.dev.aporia.com.rssfeed.common.Dependencies
 import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
 

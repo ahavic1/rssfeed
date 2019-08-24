@@ -1,13 +1,14 @@
-package feedrss.dev.aporia.com.rssfeed.ui
+package feedrss.dev.aporia.com.rssfeed.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
+import feedrss.dev.aporia.com.rssfeed.ui.base.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
 
-class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(),
+    OnFragmentInteractionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

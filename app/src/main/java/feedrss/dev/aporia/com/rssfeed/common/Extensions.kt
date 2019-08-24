@@ -1,11 +1,12 @@
-package feedrss.dev.aporia.com.rssfeed
+package feedrss.dev.aporia.com.rssfeed.common
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import feedrss.dev.aporia.com.rssfeed.viewmodel.ViewModelFactory
+import feedrss.dev.aporia.com.rssfeed.ui.base.AppError
+import feedrss.dev.aporia.com.rssfeed.ui.base.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import retrofit2.HttpException

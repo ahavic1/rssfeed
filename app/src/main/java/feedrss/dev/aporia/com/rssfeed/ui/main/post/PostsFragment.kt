@@ -1,4 +1,4 @@
-package feedrss.dev.aporia.com.rssfeed.ui
+package feedrss.dev.aporia.com.rssfeed.ui.main.post
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,15 +6,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding2.widget.RxSearchView
-import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
+import feedrss.dev.aporia.com.rssfeed.ui.base.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
-import feedrss.dev.aporia.com.rssfeed.viewmodel.ListViewModel
+import feedrss.dev.aporia.com.rssfeed.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_list.recyclerView
 import kotlinx.android.synthetic.main.fragment_list.searchView
 import kotlinx.android.synthetic.main.fragment_list.swipeRefreshLayout
 
-class BookmarksFragment: BaseFragment<ListViewModel>() {
+class PostsFragment : BaseFragment<PostsViewModel>() {
 
     private var listener: OnFragmentInteractionListener? = null
     private val postsAdapter by lazy {
@@ -23,28 +23,45 @@ class BookmarksFragment: BaseFragment<ListViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_list
-    override val viewModelClass: Class<ListViewModel>
-        get() = ListViewModel::class.java
+    override val viewModelClass: Class<PostsViewModel>
+        get() = PostsViewModel::class.java
+    override val viewModeRId: Int
+        get() = 0
 
     override fun bindViewModel() {
-        viewModel.bookmarkedPosts.observe(viewLifecycleOwner, Observer {
+        setupUI()
+
+        viewModel.posts.observe(this@PostsFragment, Observer {
             it?.let {
                 swipeRefreshLayout.isRefreshing = false
                 postsAdapter.update(it)
             }
         })
 
-        viewModel.errorObservable.observe(viewLifecycleOwner, Observer {
+        viewModel.errorObservable.observe(this@PostsFragment, Observer {
             it?.let { onError(it) }
         })
+    }
 
-        viewModel.postObservable.observe(viewLifecycleOwner, Observer {
-            it?.let { openDetails(it) }
-        })
+    @SuppressLint("CheckResult")
+    private fun setupUI() {
+        recyclerView.run {
+            layoutManager = LinearLayoutManager(activity)
+            itemAnimator = DefaultItemAnimator()
+            adapter = postsAdapter
+        }
 
-        initRecyclerView()
-        disableOnRefreshListener()
-        setOnSearchListener()
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = true
+            viewModel.refreshPosts()
+        }
+
+        RxSearchView.queryTextChangeEvents(searchView)
+            .skipWhile {
+                it.queryText().length < 3
+            }.subscribe {
+                viewModel.searchPosts(it.queryText())
+            }
     }
 
     override fun onAttach(context: Context) {
@@ -61,33 +78,8 @@ class BookmarksFragment: BaseFragment<ListViewModel>() {
         listener = null
     }
 
-    private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = postsAdapter
-    }
-
-    private fun disableOnRefreshListener() {
-        swipeRefreshLayout.isEnabled = false
-    }
-
-    @SuppressLint("CheckResult")
-    private fun setOnSearchListener() {
-        RxSearchView.queryTextChangeEvents(searchView)
-                .skipWhile {
-                    it.queryText().length < 3
-                }
-                .subscribe {
-                    postsAdapter.filter.filter(it.queryText())
-                }
-    }
-
-    private fun openDetails(post: Post) {
-
-    }
-
     companion object {
         @JvmStatic
-        fun newInstance() = BookmarksFragment()
+        fun newInstance() = PostsFragment()
     }
 }

@@ -1,7 +1,8 @@
 package feedrss.dev.aporia.com.rssfeed.data.repository
 
-import feedrss.dev.aporia.com.rssfeed.data.dao.FeedDao
-import feedrss.dev.aporia.com.rssfeed.data.dao.PostDao
+import androidx.room.Dao
+import androidx.room.Query
+import feedrss.dev.aporia.com.rssfeed.data.db.BaseDao
 import feedrss.dev.aporia.com.rssfeed.data.model.Feed
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.network.WebService
@@ -17,7 +18,7 @@ class FeedRepository(var webService: WebService,
         Post(id = it.link, title = it.title, description = it.description, url = it.link)
     }
 
-    fun getFeeds(): Single<List<Feed>> //= feedDao.load()
+    fun getFeeds(): Single<List<Feed>> //= feedDao.getPosts()
     {
         val postsArray = ArrayList<Feed>()
         for (i in 1..10) {
@@ -54,4 +55,17 @@ class FeedRepository(var webService: WebService,
                     postDao.save(it.items?.map(postMapper)!!)
                 }
     }
+}
+
+@Dao
+abstract class FeedDao: BaseDao<Feed> {
+
+    @Query("SELECT * FROM feed")
+    abstract fun load(): Single<List<Feed>>
+
+    @Query("SELECT * FROM feed WHERE id = :id")
+    abstract fun loadById(id: String): Single<Feed>
+
+    @Query("UPDATE feed SET refreshInterval = :refreshInterval WHERE id = :id")
+    abstract fun updateRefreshInterval(id: String, refreshInterval: Int)
 }

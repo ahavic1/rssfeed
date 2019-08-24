@@ -1,7 +1,7 @@
-package feedrss.dev.aporia.com.rssfeed.viewmodel
+package feedrss.dev.aporia.com.rssfeed.ui.main.feed
 
-import feedrss.dev.aporia.com.rssfeed.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.Schedulers
+import feedrss.dev.aporia.com.rssfeed.ui.base.BaseViewModel
+import feedrss.dev.aporia.com.rssfeed.ui.base.Schedulers
 import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
 
 class AddFeedViewModel(

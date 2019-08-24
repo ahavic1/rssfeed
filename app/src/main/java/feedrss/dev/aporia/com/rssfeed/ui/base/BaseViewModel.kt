@@ -1,13 +1,23 @@
-package feedrss.dev.aporia.com.rssfeed
+package feedrss.dev.aporia.com.rssfeed.ui.base
 
+import android.os.Bundle
 import androidx.lifecycle.*
+import androidx.navigation.NavDirections
+import feedrss.dev.aporia.com.rssfeed.common.disposeWith
+import feedrss.dev.aporia.com.rssfeed.common.handleError
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseViewModel(protected  var schedulers: Schedulers): ViewModel(), LifecycleObserver {
+abstract class BaseViewModel(protected var schedulers: Schedulers) : ViewModel(),
+    LifecycleObserver {
+
+
+    private val _navigationEvent = SingleLiveEvent<NavigationEvent>()
+    val navigationEvent: SingleLiveEvent<NavigationEvent> = _navigationEvent
 
     protected val disposables = CompositeDisposable()
+    var arguments: Bundle = Bundle()
 
     override fun onCleared() {
         super.onCleared()
@@ -22,7 +32,14 @@ abstract class BaseViewModel(protected  var schedulers: Schedulers): ViewModel()
     open protected fun onLifecycleOwnerPause() {
     }
 
-    protected fun <T> Single<T>.uiSubscribe(block: (T) -> Unit, errorObservable: MutableLiveData<AppError>) {
+    protected fun navigate(directions: NavDirections) {
+        _navigationEvent.value = NavigationEvent.To(directions)
+    }
+
+    protected fun <T> Single<T>.uiSubscribe(
+        block: (T) -> Unit,
+        errorObservable: MutableLiveData<AppError>
+    ) {
         subscribeOn(schedulers.io())
             .observeOn(schedulers.main())
             .subscribe({
@@ -33,7 +50,10 @@ abstract class BaseViewModel(protected  var schedulers: Schedulers): ViewModel()
             }).disposeWith(disposables)
     }
 
-    protected fun <T> Observable<T>.uiSubscribe(block: (T) -> Unit, errorObservable: MutableLiveData<AppError>) {
+    protected fun <T> Observable<T>.uiSubscribe(
+        block: (T) -> Unit,
+        errorObservable: MutableLiveData<AppError>
+    ) {
         subscribeOn(schedulers.io())
             .observeOn(schedulers.main())
             .subscribe({
@@ -43,4 +63,9 @@ abstract class BaseViewModel(protected  var schedulers: Schedulers): ViewModel()
                 errorObservable.value = appError
             }).disposeWith(disposables)
     }
+}
+
+sealed class NavigationEvent() {
+    data class To(val directions: NavDirections) : NavigationEvent()
+    object Back : NavigationEvent()
 }

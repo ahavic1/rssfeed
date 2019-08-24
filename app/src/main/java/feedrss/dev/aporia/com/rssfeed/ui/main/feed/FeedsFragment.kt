@@ -1,11 +1,11 @@
-package feedrss.dev.aporia.com.rssfeed.ui
+package feedrss.dev.aporia.com.rssfeed.ui.main.feed
 
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import feedrss.dev.aporia.com.rssfeed.R
-import feedrss.dev.aporia.com.rssfeed.viewmodel.FeedsViewModel
+import feedrss.dev.aporia.com.rssfeed.ui.base.BaseFragment
 
 class FeedsFragment: BaseFragment<FeedsViewModel>() {
 
@@ -13,6 +13,8 @@ class FeedsFragment: BaseFragment<FeedsViewModel>() {
         get() = R.layout.feeds_fragment_layout
     override val viewModelClass: Class<FeedsViewModel>
         get() = FeedsViewModel::class.java
+    override val viewModeRId: Int
+        get() = 0
 
     override fun bindViewModel() {
         viewModel.feedsObservable.observe(viewLifecycleOwner, Observer { feeds ->

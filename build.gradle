@@ -10,7 +10,7 @@ buildscript {
 
         gradleVersion = '3.4.0'
         kotlinVersion = '1.3.50'
-        safeArgsVersion = '1.0.0-alpha02'
+        safeArgsVersion = '1.0.0'
 
         // Android API
         appCompatVersion = '1.1.0-rc01'

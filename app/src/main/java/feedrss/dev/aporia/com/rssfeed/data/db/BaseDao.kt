@@ -1,4 +1,4 @@
-package feedrss.dev.aporia.com.rssfeed.data.dao
+package feedrss.dev.aporia.com.rssfeed.data.db
 
 import androidx.room.Delete
 import androidx.room.Insert

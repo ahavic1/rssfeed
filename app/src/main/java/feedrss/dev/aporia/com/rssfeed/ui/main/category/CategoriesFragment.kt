@@ -1,14 +1,9 @@
-package feedrss.dev.aporia.com.rssfeed.ui
+package feedrss.dev.aporia.com.rssfeed.ui.main.category
 
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import feedrss.dev.aporia.com.rssfeed.OnFragmentInteractionListener
+import feedrss.dev.aporia.com.rssfeed.ui.base.OnFragmentInteractionListener
 import feedrss.dev.aporia.com.rssfeed.R
-import feedrss.dev.aporia.com.rssfeed.viewmodel.CategoriesViewModel
+import feedrss.dev.aporia.com.rssfeed.ui.base.BaseFragment
 
 class CategoriesFragment : BaseFragment<CategoriesViewModel>() {
     private var listener: OnFragmentInteractionListener? = null
@@ -17,6 +12,8 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel>() {
         get() = R.layout.fragment_categories
     override val viewModelClass: Class<CategoriesViewModel>
         get() = CategoriesViewModel::class.java
+    override val viewModeRId: Int
+        get() = 0
 
     override fun bindViewModel() {
     }

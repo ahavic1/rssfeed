@@ -7,7 +7,19 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="feedrss.dev.aporia.com.rssfeed.ui.HomeFragment"
+        android:name="feedrss.dev.aporia.com.rssfeed.ui.main.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_postDetails"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailsFragment"
+        android:name="feedrss.dev.aporia.com.rssfeed.ui.main.post.PostDetailsFragment"
+        android:label="PostDetailsFragment" >
+        <argument
+            android:name="postId"
+            app:argType="string" />
+    </fragment>
 </navigation>

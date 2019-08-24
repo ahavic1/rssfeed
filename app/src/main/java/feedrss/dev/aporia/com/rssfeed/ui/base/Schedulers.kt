@@ -1,4 +1,4 @@
-package feedrss.dev.aporia.com.rssfeed
+package feedrss.dev.aporia.com.rssfeed.ui.base
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
