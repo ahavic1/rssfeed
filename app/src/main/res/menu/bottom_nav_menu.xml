@@ -3,22 +3,22 @@
     <item
         android:id="@+id/actionList"
         android:icon="@drawable/ic_home"
-        android:title="@string/home_nav_label"/>
+        android:title="@string/bottom_nav_home"/>
 
     <item
         android:id="@+id/actionBookmarked"
         android:icon="@drawable/ic_bookmark_white"
-        android:title="Bookmarked"/>
+        android:title="@string/bottom_nav_bookmarked"/>
     <item
         android:id="@+id/actionAdd"
-        android:title="Add new"/>
+        android:icon="@drawable/ic_add"
+        android:title="@string/bottom_nav_add_feed"/>
     <item
         android:id="@+id/actionCategory"
         android:icon="@drawable/ic_list"
-        android:title="Feeds"/>
+        android:title="@string/bottom_nav_categories"/>
     <item
         android:id="@+id/actionSettings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
-        />
+        android:title="@string/bottom_nav_settings" />
 </menu>

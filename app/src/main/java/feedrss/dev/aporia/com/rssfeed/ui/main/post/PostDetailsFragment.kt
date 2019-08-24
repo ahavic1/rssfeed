@@ -3,7 +3,6 @@ package feedrss.dev.aporia.com.rssfeed.ui.main.post
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
@@ -22,9 +21,6 @@ class PostDetailsFragment : BaseFragment<PostDetailsViewModel>() {
         get() = BR.viewModel
 
     override fun bindViewModel() {
-        viewModel.post.observe(viewLifecycleOwner, Observer {
-            // Show post data
-        })
     }
 }
 
