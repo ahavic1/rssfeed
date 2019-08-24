@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 abstract class BaseFragment<ViewModelType : BaseViewModel> : Fragment() {
 
     protected lateinit var viewModel: ViewModelType
-    private lateinit var viewDataBinding: ViewDataBinding
+    protected lateinit var viewDataBinding: ViewDataBinding
 
     abstract val layoutId: Int
     abstract val viewModelClass: Class<ViewModelType>

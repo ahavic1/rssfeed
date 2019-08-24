@@ -1,8 +1,10 @@
 package feedrss.dev.aporia.com.rssfeed.ui.main.post
 
+import android.widget.ImageView
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
@@ -21,6 +23,12 @@ class PostDetailsFragment : BaseFragment<PostDetailsViewModel>() {
         get() = BR.viewModel
 
     override fun bindViewModel() {
+        viewModel.post.observe(viewLifecycleOwner, Observer { post ->
+            view?.findViewById<ImageView>(R.id.bookmark)?.let {
+                if (post.bookmarked) it.setImageResource(R.drawable.ic_bookmark_fill)
+                else it.setImageResource(R.drawable.ic_bookmark)
+            }
+        })
     }
 }
 
@@ -40,6 +48,26 @@ class PostDetailsViewModel(
 
     override fun onLifecycleOwnerResume() {
         super.onLifecycleOwnerResume()
+        fetchPost()
+    }
+
+    fun onBookmarkClick() {
+        if (post.value!!.bookmarked) {
+            postRepository.unBookmarkPost(postId).uiSubscribe({
+                _post.value = post.value?.copy(
+                    bookmarked = false
+                )
+            }, errorObservable)
+        } else {
+            postRepository.bookmarkPost(postId).uiSubscribe({
+                _post.value = post.value?.copy(
+                    bookmarked = true
+                )
+            }, errorObservable)
+        }
+    }
+
+    private fun fetchPost() {
         postRepository.getPost(postId).uiSubscribe({
             _post.value = it
         }, errorObservable)
