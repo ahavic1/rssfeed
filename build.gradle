@@ -21,6 +21,9 @@ buildscript {
         lifecycleVersion = "2.2.0-alpha03"
         navigationVersion = "1.0.0"
 
+        // Dagger
+        daggerVersion = '2.24'
+
         // Room
         roomVersion = "2.2.0-beta01"
         roomRxVersion = "2.2.0-beta01"

@@ -2,17 +2,17 @@ package feedrss.dev.aporia.com.rssfeed.ui.main.post
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import feedrss.dev.aporia.com.rssfeed.ui.base.AppError
-import feedrss.dev.aporia.com.rssfeed.ui.base.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.ui.base.Schedulers
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
-import feedrss.dev.aporia.com.rssfeed.ui.main.HomeFragment
+import feedrss.dev.aporia.com.rssfeed.di.Schedulers
+import feedrss.dev.aporia.com.rssfeed.ui.base.BaseViewModel
 import feedrss.dev.aporia.com.rssfeed.ui.main.HomeFragmentDirections
+import javax.inject.Inject
 
-class PostsViewModel(private var postRepository: PostRepository,
-                     schedulers: Schedulers
-): BaseViewModel(schedulers) {
+class PostsViewModel @Inject constructor(
+    private var postRepository: PostRepository,
+    schedulers: Schedulers
+) : BaseViewModel(schedulers) {
 
     private val postList = mutableListOf<Post>()
 
@@ -22,11 +22,9 @@ class PostsViewModel(private var postRepository: PostRepository,
     private val _bookmarkedPosts = MutableLiveData<List<Post>>()
     val bookmarkedPosts: LiveData<List<Post>> = _bookmarkedPosts
 
-    val errorObservable = MutableLiveData<AppError>()
-
     init {
         // Testing
-        postRepository.populateDB().uiSubscribe({}, errorObservable)
+        postRepository.populateDB().uiSubscribe {}
         fetchPosts()
     }
 
@@ -44,15 +42,15 @@ class PostsViewModel(private var postRepository: PostRepository,
     }
 
     fun onBookmarkItem(post: Post) {
-        postRepository.bookmarkPost(post.id).uiSubscribe({
+        postRepository.bookmarkPost(post.id).uiSubscribe {
             fetchPosts()
-        }, errorObservable)
+        }
     }
 
     fun unBookmarkPost(post: Post) {
-        postRepository.unBookmarkPost(post.id).uiSubscribe({
+        postRepository.unBookmarkPost(post.id).uiSubscribe {
             fetchPosts()
-        }, errorObservable)
+        }
     }
 
     fun searchPosts(queryText: CharSequence) {
@@ -70,11 +68,11 @@ class PostsViewModel(private var postRepository: PostRepository,
     }
 
     private fun fetchPosts() {
-        postRepository.getPosts().uiSubscribe({ posts ->
+        postRepository.getPosts().uiSubscribe { posts ->
             postList.clear()
             postList.addAll(posts)
             _posts.value = posts
             _bookmarkedPosts.value = posts.filter { it.bookmarked }
-        }, errorObservable)
+        }
     }
 }
