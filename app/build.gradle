@@ -1,9 +1,33 @@
+import java.util.function.BiConsumer
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+
+Properties loadProperties(String buildType) {
+    def props = new Properties()
+    def filename = buildType + ".properties"
+    try {
+        file(filename).withInputStream { props.load(it) }
+        return props
+    } catch (FileNotFoundException ignored) {
+        throw new Exception("Config not found ($filename). Check out config-example.properties file.")
+    }
+}
+
+HashMap<String, String> loadPropertiesIntoMap(String buildType) {
+    def map = new HashMap<String, String>()
+    loadProperties(buildType).forEach(new BiConsumer<Object, Object>() {
+        @Override
+        void accept(Object key, Object value) {
+            map.put(key, value)
+        }
+    })
+    return map
+}
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -19,6 +43,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            for (Map.Entry<String, String> entry : loadPropertiesIntoMap("release").entrySet()) {
+                buildConfigField "String", entry.key, "\"${entry.value}\""
+            }
         }
     }
 
