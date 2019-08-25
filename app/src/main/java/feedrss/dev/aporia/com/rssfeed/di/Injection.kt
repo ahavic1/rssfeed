@@ -1,19 +1,30 @@
 package feedrss.dev.aporia.com.rssfeed.di
 
-import android.content.Context
-import feedrss.dev.aporia.com.rssfeed.common.Dependencies
-import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
-import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
+import dagger.Binds
+import dagger.Module
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object Injection {
+@Module
+abstract class SchedulersModule {
 
-    fun providePostRepository(context: Context): PostRepository {
-        val database = Dependencies.getDatabase(context)
-        return PostRepository(database.postDao())
-    }
+        @Binds
+        @Singleton
+        abstract fun provideSchedulers(schedulers: SchedulersImpl): Schedulers
+}
 
-    fun provideFeedRepository(context: Context): FeedRepository {
-        val database = Dependencies.getDatabase(context)
-        return FeedRepository(Dependencies.getRetrofit(), database.postDao(), database.feedDao())
-    }
+class SchedulersImpl @Inject constructor(): Schedulers {
+    override fun io(): Scheduler = io.reactivex.schedulers.Schedulers.io()
+
+    override fun main(): Scheduler = AndroidSchedulers.mainThread()
+
+    override fun computation(): Scheduler = io.reactivex.schedulers.Schedulers.computation()
+}
+
+interface Schedulers {
+    fun io(): Scheduler
+    fun main(): Scheduler
+    fun computation(): Scheduler
 }

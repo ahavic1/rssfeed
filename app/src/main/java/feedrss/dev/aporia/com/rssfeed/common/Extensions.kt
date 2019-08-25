@@ -12,9 +12,6 @@ import retrofit2.HttpException
 
 // Fragment
 
-fun <T : ViewModel> FragmentActivity.obtainViewModel(viewModelClass: Class<T>) =
-    ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
-
 fun FragmentManager.replaceFragment(layoutId: Int, fragment: Fragment) {
     this.beginTransaction().apply {
         replace(layoutId, fragment)

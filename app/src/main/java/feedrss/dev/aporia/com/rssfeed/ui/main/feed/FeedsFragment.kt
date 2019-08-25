@@ -4,8 +4,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import dagger.Binds
+import dagger.Module
+import dagger.multibindings.IntoMap
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.ui.base.BaseFragment
+import feedrss.dev.aporia.com.rssfeed.ui.base.ViewModelKey
 
 class FeedsFragment: BaseFragment<FeedsViewModel>() {
 
@@ -33,4 +38,12 @@ class FeedsFragment: BaseFragment<FeedsViewModel>() {
         @JvmStatic
         fun newInstance() = FeedsFragment()
     }
+}
+
+@Module
+abstract class FeedsModule {
+    @Binds
+    @IntoMap
+    @ViewModelKey(FeedsViewModel::class)
+    abstract fun provideFeedsViewModel(viewModel: FeedsViewModel): ViewModel
 }

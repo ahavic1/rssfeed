@@ -1,12 +1,18 @@
 package feedrss.dev.aporia.com.rssfeed.ui.main.post
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding2.widget.RxSearchView
+import dagger.Binds
+import dagger.Module
+import dagger.multibindings.IntoMap
 import feedrss.dev.aporia.com.rssfeed.R
 import feedrss.dev.aporia.com.rssfeed.ui.base.BaseFragment
+import feedrss.dev.aporia.com.rssfeed.ui.base.ViewModelKey
 import kotlinx.android.synthetic.main.fragment_posts.recyclerView
 import kotlinx.android.synthetic.main.fragment_posts.searchView
 import kotlinx.android.synthetic.main.fragment_posts.swipeRefreshLayout
@@ -60,4 +66,13 @@ class PostsFragment : BaseFragment<PostsViewModel>() {
         @JvmStatic
         fun newInstance() = PostsFragment()
     }
+}
+
+@Module
+abstract class PostsModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PostsViewModel::class)
+    abstract fun providePostsViewModel(viewModel: PostsViewModel): ViewModel
 }

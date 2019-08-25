@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import feedrss.dev.aporia.com.rssfeed.R
+import feedrss.dev.aporia.com.rssfeed.di.Schedulers
 
 abstract class BaseViewModel(private val schedulers: Schedulers) : ViewModel(),
     LifecycleObserver {

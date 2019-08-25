@@ -3,11 +3,11 @@ package feedrss.dev.aporia.com.rssfeed.ui.main.feed
 import androidx.lifecycle.MutableLiveData
 import feedrss.dev.aporia.com.rssfeed.data.model.Feed
 import feedrss.dev.aporia.com.rssfeed.data.repository.FeedRepository
-import feedrss.dev.aporia.com.rssfeed.ui.base.AppError
+import feedrss.dev.aporia.com.rssfeed.di.Schedulers
 import feedrss.dev.aporia.com.rssfeed.ui.base.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.ui.base.Schedulers
+import javax.inject.Inject
 
-class FeedsViewModel(
+class FeedsViewModel @Inject constructor(
     private var feedRepository: FeedRepository,
     schedulers: Schedulers
 ) : BaseViewModel(schedulers) {

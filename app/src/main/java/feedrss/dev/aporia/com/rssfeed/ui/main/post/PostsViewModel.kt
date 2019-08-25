@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import feedrss.dev.aporia.com.rssfeed.data.model.Post
 import feedrss.dev.aporia.com.rssfeed.data.repository.PostRepository
+import feedrss.dev.aporia.com.rssfeed.di.Schedulers
 import feedrss.dev.aporia.com.rssfeed.ui.base.BaseViewModel
-import feedrss.dev.aporia.com.rssfeed.ui.base.Schedulers
 import feedrss.dev.aporia.com.rssfeed.ui.main.HomeFragmentDirections
+import javax.inject.Inject
 
-class PostsViewModel(private var postRepository: PostRepository,
-                     schedulers: Schedulers
-): BaseViewModel(schedulers) {
+class PostsViewModel @Inject constructor(
+    private var postRepository: PostRepository,
+    schedulers: Schedulers
+) : BaseViewModel(schedulers) {
 
     private val postList = mutableListOf<Post>()
 

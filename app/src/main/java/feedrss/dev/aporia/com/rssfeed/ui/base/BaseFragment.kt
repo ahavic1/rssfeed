@@ -10,11 +10,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-abstract class BaseFragment<ViewModelType : BaseViewModel> : BaseView<ViewModelType>, Fragment() {
+abstract class BaseFragment<ViewModelType : BaseViewModel> : BaseView<ViewModelType>, DaggerFragment() {
 
+    @Inject protected lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Suppress("MemberVisibilityCanBePrivate")
     protected lateinit var viewDataBinding: ViewDataBinding
 
     final override lateinit var viewModel: ViewModelType
@@ -33,10 +39,7 @@ abstract class BaseFragment<ViewModelType : BaseViewModel> : BaseView<ViewModelT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory.getInstance(activity?.application!!)
-        ).get(viewModelClass)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
         lifecycle.addObserver(viewModel)
 
         viewDataBinding.let {
